@@ -27,21 +27,20 @@ pipeline {
             }
         }
 
-        stage('Deploy to IIS') {
+stage('Deploy to IIS') {
     steps {
         script {
             def iisAppPath = "E:\\Deploy\\JenkinsWithIIS"
             def sourcePath = "${env.WORKSPACE}\\out"
             
-            // Sửa lại cách escape dấu nháy và cấu trúc lệnh PowerShell
-            bat """
-                powershell -NoProfile -Command ^
-                \"if (-not (Test-Path '${iisAppPath}')) { ^
-                    New-Item -ItemType Directory -Path '${iisAppPath}' -Force; ^
-                } ^
-                Copy-Item -Path '${sourcePath}\\*' -Destination '${iisAppPath}' -Recurse -Force; ^
-                iisreset;\"
-            """
+            // Tạo thư mục nếu chưa tồn tại
+            bat "if not exist \"${iisAppPath}\" mkdir \"${iisAppPath}\""
+            
+            // Copy files
+            bat "xcopy \"${sourcePath}\\*\" \"${iisAppPath}\" /s /e /y"
+            
+            // Restart IIS
+            bat "iisreset"
         }
     }
 }
