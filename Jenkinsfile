@@ -27,24 +27,23 @@ pipeline {
             }
         }
 
-       stage('Deploy to IIS') {
-    steps {
-        script {
-            def iisAppPath = "E:\\Deploy\\JenkinsWithIIS"
-            def sourcePath = "${env.WORKSPACE}\\out"
-            bat """
-            powershell -Command \"
-            if (-Not (Test-Path '${iisAppPath}')) {
-                New-Item -ItemType Directory -Path '${iisAppPath}'
+        stage('Deploy to IIS') {
+            steps {
+                script {
+                    def iisAppPath = "E:\\Deploy\\JenkinsWithIIS"
+                    def sourcePath = "${env.WORKSPACE}\\out"
+                    bat """
+                    powershell -NoProfile -Command "& {
+                        if (-Not (Test-Path '${iisAppPath}')) {
+                            New-Item -ItemType Directory -Path '${iisAppPath}'
+                        }
+                        Copy-Item -Recurse -Force '${sourcePath}\\*' '${iisAppPath}'
+                        iisreset
+                    }"
+                    """
+                }
             }
-            Copy-Item -Recurse -Force '${sourcePath}\\*' '${iisAppPath}';
-            iisreset;
-            \"
-            """
         }
-    }
-}
-
     }
 
     post {
