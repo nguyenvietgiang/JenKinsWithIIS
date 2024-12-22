@@ -18,6 +18,10 @@ namespace JenKinsWithIIS.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get weather forecast information
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
