@@ -17,9 +17,6 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
     });
 }
-
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();

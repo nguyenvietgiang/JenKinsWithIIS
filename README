@@ -1,0 +1,13 @@
+bỏ app.UseHttpsRedirection();
+
+docker build -t jenkinswithiis .
+docker run -p 8080:80 jenkinswithiis
+
+vào: http://localhost:8080/swagger/index.html 
+
+xóa bỏ
+
+docker stop id
+docker rm id
+
+id thay tương ứng
