@@ -1,11 +1,14 @@
+﻿using Neuroglia.AsyncApi;
+using Neuroglia.AsyncApi.AspNetCore;
+using Neuroglia.AsyncApi.AspNetCore.UI;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Thêm các dịch vụ vào container
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAsyncApi(); // Đăng ký dịch vụ AsyncAPI
 
 var app = builder.Build();
 
@@ -17,8 +20,13 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
     });
 }
-app.UseAuthorization();
 
+app.UseRouting();
+
+// Ánh xạ tài liệu AsyncAPI và UI
+//app.MapAsyncApiDocuments(); // Cung cấp JSON AsyncAPI tại /asyncapi.json
+
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
